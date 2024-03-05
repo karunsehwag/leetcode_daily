@@ -3,7 +3,7 @@ public:
     int minimumLength(string s) {
         int low=0;
         int high=s.size()-1;
-        while(high>low&& s[high]==s[low]&&s.size()!=1)
+        while(high>low&& s[high]==s[low])
         {
             char ch=s[low];
             while(ch==s[low]&high>=low)
