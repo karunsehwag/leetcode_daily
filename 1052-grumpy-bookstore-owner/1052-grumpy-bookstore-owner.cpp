@@ -8,11 +8,7 @@ public:
             if(grumpy[i]==0)
             {
                 ans+=customers[i];
-                vec.push_back(0);
-            }
-            else
-            {
-                vec.push_back(customers[i]);
+                customers[i]=0;
             }
         }
         int left=0;
@@ -20,14 +16,13 @@ public:
         for(int i=0;i<grumpy.size();i++)
         {
           if(minutes>i)
-              val+=vec[i];
+              val+=customers[i];
            else
            {
-               val=val-vec[left];
+               val=val-customers[left];
                left++;
-               val+=vec[i];
+               val+=customers[i];
            }
-            cout<<val<<" ";
             check=max(val,check);
         }
         ans=ans+check;
