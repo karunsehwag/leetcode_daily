@@ -1,8 +1,6 @@
 class Solution {
 public:
     vector<int> luckyNumbers (vector<vector<int>>& matrix) {
-        vector<int> vec;
-        vector<int> ans;
        int rmin=INT_MIN,cmax=INT_MAX;
         for(int k=0;k<matrix.size();k++)
         {   
@@ -16,7 +14,6 @@ public:
             }
          rmin=max(rmin,val);
         }
-        cout<<rmin;
          for(int k=0;k<matrix[0].size();k++)
         {   
              int val=INT_MIN;
