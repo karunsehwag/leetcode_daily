@@ -4,8 +4,7 @@ public:
         
         vector<vector<int>> vec(nums.size(),vector<int>(2,0));
         for(int i=0;i<nums.size();i++)
-        {   int count=0;
-            int val=nums[i];
+        {  int val=nums[i];
             if(val==0)
                 vec[i][0]=mapping[val];
          else
@@ -22,7 +21,6 @@ public:
                 val=mapping[st.top()%10]+val*10;
                 st.pop();
             }
-            cout<<val<<" ";
             vec[i][0]=val;
              
          }
