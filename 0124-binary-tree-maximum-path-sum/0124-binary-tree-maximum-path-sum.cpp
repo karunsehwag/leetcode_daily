@@ -12,26 +12,24 @@
 class Solution {
 public:
     int maxPathSum(TreeNode* root) {
-        // Initialize the answer with the smallest integer value.
-        int ans = INT_MIN;
-        rec(root, ans);
+        
+        int ans=INT_MIN;
+        rec(root,ans);
         return ans;
     }
     
-    // Function to compute the maximum path sum and update ans.
-    int rec(TreeNode* root, int& ans) {
-        if (root == NULL)
+    int rec(TreeNode* root,int& ans)
+    {
+        if(root==NULL)
             return 0;
         
-        // Recursively get the maximum sum of left and right subtrees.
-        int left = max(rec(root->left, ans), 0); // Ignore negative paths
-        int right = max(rec(root->right, ans), 0); // Ignore negative paths
+        int left=max(rec(root->left,ans),0);
+        int right=max(rec(root->right,ans),0);
+        ans=max(ans,left+root->val);
+        ans=max(ans,right+root->val);
+        ans=max(ans,root->val);
+        ans=max(ans,(left+right+root->val));
         
-        // Calculate the maximum path sum with the current node as the highest point.
-        int currentMax = root->val + left + right;
-      
-        ans = max(ans, currentMax);
-    
-        return root->val + max(left, right);
+        return max((left+root->val),(right+root->val));
     }
 };
