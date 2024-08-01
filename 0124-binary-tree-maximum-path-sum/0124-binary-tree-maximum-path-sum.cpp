@@ -25,9 +25,6 @@ public:
         
         int left=max(rec(root->left,ans),0);
         int right=max(rec(root->right,ans),0);
-        ans=max(ans,left+root->val);
-        ans=max(ans,right+root->val);
-        ans=max(ans,root->val);
         ans=max(ans,(left+right+root->val));
         
         return max((left+root->val),(right+root->val));
