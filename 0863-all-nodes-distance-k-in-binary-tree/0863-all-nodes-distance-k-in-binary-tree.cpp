@@ -9,42 +9,45 @@
  */
 class Solution {
 public:
-    unordered_map<TreeNode*,TreeNode*> mp;
-    void dfs(TreeNode* root,TreeNode* parent)
+    void dfs(TreeNode* root,TreeNode* parent,unordered_map<TreeNode*,TreeNode*>& mp)
     {
-        if(!root) return;
+        
+        if(root==NULL)
+            return;
         if(!parent) parent=root;
         else mp[root]=parent;
-        dfs(root->left,root);
-        dfs(root->right,root);
+        
+        dfs(root->left,root,mp);
+        dfs(root->right,root,mp);
+        return;
     }
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         
-      
-        
-        dfs(root,NULL);
+        unordered_map<TreeNode*,TreeNode*> mp;
+        dfs(root,NULL,mp);
         queue<TreeNode*> q;
-        set<TreeNode*> st;
         q.push(target);
+        set<TreeNode*> st;
         int cnt=0;
-        vector<int> vec;
+        vector<int> ans;
         while(!q.empty())
         {
-            if(cnt>k) break;
-           
+            if(cnt>k)
+                break;
             int size=q.size();
             for(int i=0;i<size;i++)
-            {    TreeNode* node=q.front();
-                 q.pop();
+            {
+                TreeNode* node=q.front();
+                q.pop();
                 if(node->left&&!st.count(node->left))
                 {
-                    st.insert(node->left);
                     q.push(node->left);
+                    st.insert(node->left);
                 }
                 if(node->right&&!st.count(node->right))
                 {
-                     st.insert(node->right);
                     q.push(node->right);
+                    st.insert(node->right);
                 }
                 if(mp.count(node)&&!st.count(mp[node]))
                 {
@@ -52,13 +55,15 @@ public:
                     st.insert(mp[node]);
                 }
                 st.insert(node);
-            if(cnt==k)
-                vec.push_back(node->val);
-        
+                if(cnt==k)
+                    ans.push_back(node->val);
                 
             }
-                cnt++;
+            cnt++;
+            
+            
         }
-        return vec;
+        return ans;
+        
     }
 };
