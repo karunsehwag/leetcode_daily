@@ -10,7 +10,7 @@ public:
         {
             for(int col=0;col+2<m;col++)
             {
-                if(magic(row,col,grid))
+                if(grid[row+1][col+1]==5&&magic(row,col,grid))
                      count++;
             }
         }
