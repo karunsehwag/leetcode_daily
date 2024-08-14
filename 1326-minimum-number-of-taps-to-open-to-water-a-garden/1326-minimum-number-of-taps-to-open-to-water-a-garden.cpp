@@ -22,7 +22,7 @@ public:
                 i++;
             }
 
-            if (farthest == currentEnd) {
+            if (farthest <= currentEnd) {
                 
                 return -1;
             }
