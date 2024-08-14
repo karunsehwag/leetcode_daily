@@ -1,28 +1,34 @@
 class Solution {
 public:
     int smallestDistancePair(vector<int>& nums, int k) {
-        
-        
         sort(nums.begin(),nums.end());
-        vector<int> vec((nums[nums.size()-1]-nums[0])+1,0);
-        for(int i=0;i<nums.size();i++)
+        int size=nums.size();
+        int maxd=nums[size-1]-nums[0];
+        int low=0;
+        while(maxd>low)
         {
-            for(int j=i+1;j<nums.size();j++)
-            {
-                vec[nums[j]-nums[i]]++;
-            }
+            int mid=(maxd+low)/2;
+            int count=binary(nums,mid);
+            if(k>count)
+                low=mid+1;
+            else
+                maxd=mid;
+                
         }
+        return low;
+        
+    }
+    
+    int binary(vector<int>& nums,int k)
+    {
+        int left=0,right=0;
         int count=0;
-        int ans=0;
-        for(int i=0;i<vec.size();i++)
+        for(int right=0;right<nums.size();right++)
         {
-            count+=vec[i];
-            if(count>=k)
-                return i;
+            while((nums[right]-nums[left])>k)
+                left++;
+            count+=right-left;
         }
-        
-        
-        return -1;
-        
+        return count;
     }
 };
