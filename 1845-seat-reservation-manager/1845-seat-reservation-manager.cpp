@@ -1,28 +1,22 @@
 class SeatManager {
 public:
-    vector<int> vec;
-    int k=0;
+    priority_queue<int,vector<int>,greater<int>> pq;
     SeatManager(int n) {
-        vec.resize(n,0);
+        
+        for(int i=1;i<=n;i++)
+            pq.push(i);
         
     }
     
     int reserve() {
-        
-        for(int i=k;i<vec.size();i++)
-            if(vec[i]==0)
-            {   vec[i]=1;
-                k=i+1;
-                return i+1;}
-        
-        return -1;
-        
+        int val=pq.top();
+        pq.pop();
+        return val;
     }
     
     void unreserve(int seatNumber) {
         
-        vec[seatNumber-1]=0;
-        k=min(seatNumber-1,k);
+        pq.push(seatNumber);
         
     }
 };
