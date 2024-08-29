@@ -1,42 +1,46 @@
 class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
+        
+        Disjoint u(20002);
         int n=stones.size();
-        Disjointset u(20002);
         for(int i=0;i<n;i++)
         {
             u.unionfind(stones[i][0],stones[i][1]+10001);
         }
         int count=0;
-        for (int i = 0; i < 20002; i++) {
-            if ((u.findupar(i) == i && u.getsize(i) > 1)) {
+        for(int i=0;i<20002;i++)
+        {
+            if(u.findupar(i)==i&&u.getsize(i)>1)
                 count++;
-            }
         }
         
         return n-count;
         
     }
-    class Disjointset
-    {     
+    
+    class Disjoint{
+        
         vector<int> parent,size;
         public:
-         Disjointset(int n)
-         {
-             parent.resize(n+1);
-             size.resize(n+1,1);
-             for(int i=0;i<n;i++)
-             {
-                 parent[i]=i;
-             }
-         }
+        Disjoint(int n)
+        {
+            parent.resize(n+1);
+            size.resize(n+1,1);
+            for(int i=0;i<n;i++)
+            {
+                parent[i]=i;
+            }
+        }
         
         int findupar(int n)
         {
             if(parent[n]==n)
-                return n;   
+                return n;
+            
             return parent[n]=findupar(parent[n]);
         }
+        
         void unionfind(int u,int v)
         {
             int u_u=findupar(u);
@@ -55,7 +59,7 @@ public:
             }
         }
         
-        int getsize(int i)
-        {return size[findupar(i)];}
+        int getsize(int n)
+        {return size[findupar(parent[n])];}
     };
 };
