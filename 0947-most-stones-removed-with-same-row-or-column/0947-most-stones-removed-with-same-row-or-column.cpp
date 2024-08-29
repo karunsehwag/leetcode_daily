@@ -1,40 +1,61 @@
 class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
-    unordered_map<int,vector<int>> mp;
-    for(int i=0;i<stones.size();i++)
-    {   
-       mp[stones[i][0]].push_back(stones[i][1]+10001);
-       mp[stones[i][1]+10001].push_back(stones[i][0]);
-    } 
- 
-     stack<int> st;
-     vector<int> vis(20002,0);
-     int count=0;
-     for(int i=0;i<stones.size();i++)
-     {
-         if(vis[stones[i][0]]==0)
-         {   count++;
-             st.push(stones[i][0]);
-             while(!st.empty())
-             {
-                int node=st.top();
-                st.pop();
-                vis[node]=1;
-                for(int it:mp[node])
-                {   
-                    if(vis[it]==0)
-                     {   
-                        st.push(it);   
-                    }
-                }
-                 
-             }   
-             
-         }
-     }
+        int n=stones.size();
+        Disjointset u(20002);
+        for(int i=0;i<n;i++)
+        {
+            u.unionfind(stones[i][0],stones[i][1]+10001);
+        }
+        int count=0;
+        for (int i = 0; i < 20002; i++) {
+            if ((u.findupar(i) == i && u.getsize(i) > 1)) {
+                count++;
+            }
+        }
         
-        return stones.size()-count;
+        return n-count;
         
     }
+    class Disjointset
+    {     
+        vector<int> parent,size;
+        public:
+         Disjointset(int n)
+         {
+             parent.resize(n+1);
+             size.resize(n+1,1);
+             for(int i=0;i<n;i++)
+             {
+                 parent[i]=i;
+             }
+         }
+        
+        int findupar(int n)
+        {
+            if(parent[n]==n)
+                return n;   
+            return parent[n]=findupar(parent[n]);
+        }
+        void unionfind(int u,int v)
+        {
+            int u_u=findupar(u);
+            int u_v=findupar(v);
+            if(u_u==u_v)
+                return;
+            if(size[u_u]>size[u_v])
+            {
+                parent[u_v]=u_u;
+                size[u_u]+=size[u_v];
+            }
+            else
+            {
+                parent[u_u]=u_v;
+                size[u_v]+=size[u_u];
+            }
+        }
+        
+        int getsize(int i)
+        {return size[findupar(i)];}
+    };
 };
