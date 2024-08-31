@@ -7,29 +7,26 @@ public:
             mp[edges[i][0]].push_back({succProb[i],edges[i][1]});
             mp[edges[i][1]].push_back({succProb[i],edges[i][0]});
         }
+        priority_queue<pair<double,int>> pq;
         vector<double> dis(n,0.0);
-        priority_queue<pair<double, int>> pq;
         pq.push({1.0,start_node});
         while(!pq.empty())
         {
             int node=pq.top().second;
             double wt=pq.top().first;
             pq.pop();
-             if (node == end_node) {
-                return wt;
-            }
-            
             for(auto it:mp[node])
             {
-                double w=it.first;
-                int node1=it.second;
-                if(w*wt>dis[node1])
-                {
-                    dis[node1]=w*wt;
-                    pq.push({dis[node1],node1});
-                }
+              int n1=it.second;
+              double w=it.first;
+              if(w*wt>dis[n1])
+              {
+                  dis[n1]=w*wt;
+                  pq.push({dis[n1],n1});
+              }
             }
         }
+        
         return dis[end_node];
     }
 };
