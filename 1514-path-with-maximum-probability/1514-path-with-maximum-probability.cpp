@@ -15,7 +15,9 @@ public:
             int node=pq.top().second;
             double wt=pq.top().first;
             pq.pop();
-          
+             if (node == end_node) {
+                return wt;
+            }
             
             for(auto it:mp[node])
             {
