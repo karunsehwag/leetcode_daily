@@ -1,35 +1,35 @@
 class Solution {
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
-        
-        vector<double> vec(n,0);
-        vec[start_node]=1;
-        for(int i=0;i<n-1;i++)
+        unordered_map<int,vector<pair<double,int>>> mp;
+        for(int i=0;i<edges.size();i++)
         {
-            bool update=false;
-            for(int j=0;j<edges.size();j++)
-            {
-               int u=edges[j][0];
-               int v=edges[j][1];
-               double path=succProb[j];
-                if(vec[u]*path>vec[v])
-                {
-                    vec[v]=vec[u]*path;
-                    update=true;
-                }
-                if(vec[v]*path>vec[u])
-                {
-                    vec[u]=vec[v]*path;
-                    update=true;
-                }
-               
-            }
-            if(!update)
-                break;
+            mp[edges[i][0]].push_back({succProb[i],edges[i][1]});
+            mp[edges[i][1]].push_back({succProb[i],edges[i][0]});
         }
-        
-        return vec[end_node];
-        
-        
+        vector<double> dis(n,0.0);
+        priority_queue<pair<double, int>> pq;
+        pq.push({1.0,start_node});
+        while(!pq.empty())
+        {
+            int node=pq.top().second;
+            double wt=pq.top().first;
+            pq.pop();
+             if (node == end_node) {
+                return wt;
+            }
+            
+            for(auto it:mp[node])
+            {
+                double w=it.first;
+                int node1=it.second;
+                if(w*wt>dis[node1])
+                {
+                    dis[node1]=w*wt;
+                    pq.push({dis[node1],node1});
+                }
+            }
+        }
+        return 0;
     }
 };
