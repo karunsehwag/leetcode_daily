@@ -1,77 +1,64 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        vector<vector<pair<int,int>>> adjacenecyList(n);
-        vector<vector<int>> shortestpath(n,vector<int>(n,INT_MAX));
-        
+        unordered_map<int,vector<pair<int,int>>> adj;
+        for(vector<int> it:edges)
+        {
+            adj[it[0]].push_back({it[2],it[1]});
+            adj[it[1]].push_back({it[2],it[0]});
+        }
+        vector<vector<int>> dis(n,vector<int>(n,INT_MAX));
         for(int i=0;i<n;i++)
-        {
-            shortestpath[i][i]=0;
-        }
-        for(auto& edge:edges)
-        {
-          adjacenecyList[edge[0]].push_back({edge[1],edge[2]});
-          adjacenecyList[edge[1]].push_back({edge[0],edge[2]});
-            
+            dis[i][i]=0;
+        for(int i=0;i<n;i++)
+             dijkstra(dis[i],adj,n,i);
+        
+       
+         int ans=0;
+         int few=INT_MAX;
+        for(int i=0;i<n;i++)
+        {   int count=0;
+            for(int j=0;j<n;j++)
+            {
+                if(dis[i][j]<=distanceThreshold)
+                {
+                    count++;
+                }
+            }
+         
+         if(few>=count)
+         {
+             few=count;
+             ans=i;
+         }
         }
         
-        for(int i=0;i<n;i++)
-        {
-            dijkstra(n,adjacenecyList,shortestpath[i],i);
-        }
-        return getcity(n,shortestpath,distanceThreshold);
+      return ans;  
         
     }
     
-    void dijkstra(int n,vector<vector<pair<int,int>>>& adj,vector<int>& shortestpath,int source)
+    void dijkstra(vector<int>& dis,unordered_map<int,vector<pair<int,int>>>& adj,int n,int i)
     {
         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
-        pq.push({0,source});
-        fill(shortestpath.begin(),shortestpath.end(),INT_MAX);
-        shortestpath[source]=0;
+        pq.push({0,i});
+        dis[i]=0;
         while(!pq.empty())
         {
-            auto [currentDistance,currentcity]=pq.top();
+            int node=pq.top().second;
+            int wt=pq.top().first;
             pq.pop();
-            if(currentDistance> shortestpath[currentcity])
+            for(auto it:adj[node])
             {
-                continue;
-            }
-            
-            for(auto& [neighbor,edgeweight]:adj[currentcity])
-            {
-                if(shortestpath[neighbor]>currentDistance+edgeweight)
+                int n=it.second;
+                int w=it.first;
+                if(w+wt<dis[n])
                 {
-                    shortestpath[neighbor]=currentDistance+edgeweight;
-                    pq.push({shortestpath[neighbor],neighbor});
+                    dis[n]=w+wt;
+                    pq.push({dis[n],n});
                 }
             }
         }
     }
-    int getcity(int n,vector<vector<int>>& vec,int dis)
-    {
-        int city=-1;
-        int fewest=n;
-        
-        for(int i=0;i<n;i++)
-        {
-            int reach=0;
-            for(int j=0;j<n;j++)
-            {
-                if(i==j)
-                    continue;
-                if(vec[i][j]<=dis)
-                    reach++;
-            }
-            if(reach<=fewest)
-            {
-               fewest=reach;
-               city=i;
-            }
-        }
-        
-        return city;
-        
-    }
+    
     
 };
