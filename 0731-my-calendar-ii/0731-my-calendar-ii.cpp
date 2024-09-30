@@ -1,42 +1,42 @@
 class MyCalendarTwo {
 public:
-    vector<pair<int,int>> bookings;
-    vector<pair<int,int>> overlap;
-    MyCalendarTwo() {
-        
-    }
-    bool book(int start, int end)  
+    map<int,int> bookingcount;
+    int maxover;
+    MyCalendarTwo() 
     {
-        for(pair<int,int> booking: overlap)
-        {
-            if(doesoverlap(booking.first,booking.second,start,end))
-                return false;
-        }
+     maxover=2;   
+    }
+    
+    bool book(int start, int end) 
+    {
         
-        for(pair<int,int> booking: bookings)
+        bookingcount[start]++;
+        bookingcount[end]--;
+        int overlapped=0;
+        for(pair<int,int> bookings: bookingcount)
         {
-            if(doesoverlap(booking.first,booking.second,start,end))
+            
+            overlapped+=bookings.second;
+            if(overlapped>maxover)
             {
-                overlap.push_back(getoverlap(booking.first,booking.second,start,end));
+                bookingcount[start]--;
+                bookingcount[end]++;
+                
+                if(bookingcount[start]==0)
+                    bookingcount.erase(start);
+                if(bookingcount[end]==0)
+                    bookingcount.erase(end);
+                
+                return false;
             }
         }
-        bookings.push_back({start,end});
+       
         return true;
-        
     }
-        private:
-        
-        bool doesoverlap(int start1,int end1, int start2, int end2)
-        {
-            return max(start1,start2)<min(end1,end2);
-        }
-        
-        pair<int,int> getoverlap(int start1,int end1,int start2,int end2)
-        {
-            return {max(start1,start2),min(end1,end2)};
-        }
-        
-        
-    
 };
 
+/**
+ * Your MyCalendarTwo object will be instantiated and called as such:
+ * MyCalendarTwo* obj = new MyCalendarTwo();
+ * bool param_1 = obj->book(start,end);
+ */
