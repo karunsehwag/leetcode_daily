@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
         int count1=0,count2=0;
-        int cand1=INT_MIN,cand2=INT_MIN;
+        int cand1=0,cand2=0;
         for(int x:nums)
         {
             if(count1==0&&x!=cand2)
@@ -31,7 +31,7 @@ public:
         {
             if(cand1==x)
                 count1++;
-            if(cand2==x)
+            else if(cand2==x)
                 count2++;
         }
         if(count1>floor(nums.size()/3))
