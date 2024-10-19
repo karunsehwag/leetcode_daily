@@ -1,40 +1,25 @@
 class Solution {
-   public:
+public:
     int subarraysWithKDistinct(vector<int>& nums, int k) {
-      
-        vector<int> distinctCount(nums.size() + 1, 0);
-
-        int totalCount = 0;
-        int left = 0;
-        int right = 0;
-        int currCount = 0;
-
-        while (right < nums.size()) {
-           
-            if (++distinctCount[nums[right++]] == 1) {
-              
-                k--;
+        return atmost(nums,k)-atmost(nums,k-1);
+    }
+    int atmost(vector<int>& nums,int k)
+    {
+        unordered_map<int,int> mp;
+        int left=0,right=0,ans=0;
+        while(nums.size()>right)
+        {
+            mp[nums[right]]++;
+            while(mp.size()>k)
+            {
+                mp[nums[left]]--;
+                if(mp[nums[left]]==0)
+                    mp.erase(nums[left]);
+                left++;
             }
-
-            
-            if (k < 0) {
-                
-                --distinctCount[nums[left++]];
-                k++;
-                currCount = 0;
-            }
-
-          
-            if (k == 0) {
-               
-                while (distinctCount[nums[left]] > 1) {
-                    --distinctCount[nums[left++]];
-                    currCount++;
-                }
-                
-                totalCount += (currCount + 1);
-            }
+            ans+=right-left+1;
+            right++;
         }
-        return totalCount;
+        return ans;
     }
 };
