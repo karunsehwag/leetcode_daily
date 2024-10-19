@@ -19,8 +19,8 @@ public:
                     st = left;  
                 }
                 
-                mp[s[left]]++;
-                if (mp[s[left]] > 0) {
+//                 mp[s[left]]++;
+                if (mp[s[left]]++ == 0) {
                     count++; 
                 }
                 left++;  
