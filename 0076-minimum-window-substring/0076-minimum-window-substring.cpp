@@ -1,42 +1,34 @@
 class Solution {
 public:
-    string minWindow(string s, string t) 
-    {
-        int n=s.size();
-        int m=t.size();
-        int j=0;
-        int count=m;
-        if(s.empty()||t.empty()||m>n)
-           return "";
+    string minWindow(string s, string t) {
         unordered_map<char,int> mp;
-        int minl=INT_MAX;
-        int st=0;
-        for(char ch:t)
-           mp[ch]++;   
-        for(int i=0;i<n;i++)
+        int left=0,right=0;
+        for(char c:t)
         {
-            if(mp[s[i]]-->0)
-               count--;
-            while(count==0)
-            {
-             if(minl>i-j+1)
-             {
-                 minl=i-j+1;
-                 st=j;
-             }
-             if (mp.find(s[j]) != mp.end()) {
-                    mp[s[j]]++;
-                    if (mp[s[j]] > 0) {
-                        count++;
-                    }
+            mp[c]++;
+        }
+        int count=t.size(),minl=INT_MAX,st=0;
+        while(s.size()>right)
+        {
+            if(mp[s[right]]-->0)
+                count--;
+            
+            while (count == 0) {
+                if (right - left+1< minl) {
+                    minl = right - left+1;
+                    st = left;  
                 }
                 
-                j++;
-            
-
-            }   
-
-        }   
-        return minl==INT_MAX? "":s.substr(st,minl);
+                mp[s[left]]++;
+                if (mp[s[left]] > 0) {
+                    count++; 
+                }
+                left++;  
+            }
+            right++;
+        }
+        string ans;
+        return ans=minl==INT_MAX?"":s.substr(st,minl);
+        
     }
 };
