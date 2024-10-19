@@ -18,10 +18,11 @@ public:
                     minl = right - left+1;
                     st = left;  
                 }
-                
-//                 mp[s[left]]++;
+                if (mp.find(s[left]) != mp.end())
+                {
                 if (mp[s[left]]++ == 0) {
                     count++; 
+                }
                 }
                 left++;  
             }
