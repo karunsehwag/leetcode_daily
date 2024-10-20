@@ -1,18 +1,35 @@
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        vector<int> freq(26);
-        for (char task : tasks) {
-            freq[task - 'A']++;
+        int freq[26]={0};
+        for(char & ch:tasks)
+        {
+            freq[ch-'A']++;
         }
-        sort(freq.begin(), freq.end());
-        int maxFreq = freq[25] - 1;
-        int idleSlots = maxFreq * n;
-
-        for (int i = 24; i >= 0 && freq[i] > 0; i--) {
-            idleSlots -= min(maxFreq, freq[i]);
+        priority_queue<int> pq;
+        for(int i=0;i<26;i++)
+        {
+            if(freq[i]>0)
+                pq.push(freq[i]);
         }
-
-        return idleSlots > 0 ? idleSlots + tasks.size() : tasks.size();
+        int time=0;
+        while(!pq.empty())
+        {
+            int cycle=n+1;
+            vector<int> store;
+            int task=0;
+            while(cycle--&&!pq.empty())
+            {
+                if(pq.top()>1)
+                    store.push_back(pq.top()-1);
+                pq.pop();
+                task++;
+            }
+            for(int x:store)
+                pq.push(x);
+            
+            time+=pq.empty()?task:n+1;
+        }
+        return time;
     }
 };
