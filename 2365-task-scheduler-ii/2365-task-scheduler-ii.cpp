@@ -4,18 +4,15 @@ public:
         unordered_map<int,long long> mp;
         long long ans=0;
         for(int i=0;i<tasks.size();i++)
-        {   if(mp.find(tasks[i])==mp.end())
-            {
-               mp[tasks[i]]=ans;
-               ans++;
-            }
-           else{
+        {  
+           if(mp.find(tasks[i])!=mp.end())
+           {
             if(ans<mp[tasks[i]]+space+1)
                ans=mp[tasks[i]]+space+1;
-                mp[tasks[i]]=ans;
-                ans++;    
-           }
-         cout<<ans;
+               
+           }  
+            mp[tasks[i]]=ans;
+            ans++;    
         }
         return ans;
         
