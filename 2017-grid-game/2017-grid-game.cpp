@@ -17,7 +17,7 @@ public:
         {
             ans=max(ans,min(suffix[i-1],prefix[grid[0].size()-1]-prefix[i-1]));
         }
-        return ans;
+        return ans==INT_MIN?0:ans;
         
     }
 };
