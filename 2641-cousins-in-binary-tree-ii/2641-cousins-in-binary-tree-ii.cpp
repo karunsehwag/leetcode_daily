@@ -30,24 +30,18 @@ public:
     {
         if(root==NULL)
             return;
-        // cout<<vec[x]<<"  "<<endl;
-        int stor=0;
-        if(root->left)
-        {   stor=root->left->val;
-            root->left->val=vec[x]-root->left->val;
-            if(root->right)
-               root->left->val=root->left->val-root->right->val;
+        if(root->left&&root->right)
+        {   int store=root->left->val+root->right->val;
+            root->right->val=vec[x]-store;
+            root->left->val=vec[x]-store;
         }
-        if(root->right)
-        { 
-          root->right->val=vec[x]-root->right->val;
-          if(root->left)
-             root->right->val=root->right->val-stor;
-        }
+         else if(root->left)
+             root->left->val=vec[x]-root->left->val;
+        else if(root->right)
+             root->right->val=vec[x]-root->right->val;
         x++;
         helper2(root->left,x);
-        helper2(root->right,x);
-        
+        helper2(root->right,x);  
     }
     TreeNode* replaceValueInTree(TreeNode* root) 
     {
@@ -55,7 +49,6 @@ public:
         helper(root,0);
         root->val=vec[0]-root->val;
         helper2(root,1);
-        return root;
-        
+        return root;    
     }
 };
