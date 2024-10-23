@@ -11,29 +11,28 @@
  */
 class Solution {
 public:
-    int ans=0;
-    void dp(TreeNode* root,vector<int> vec)
+    int dp(TreeNode* root,vector<int> vec)
     {   if(root==NULL)
-           return;
+           return 0;
+        vec[root->val]++;
         if(root->left==NULL&&root->right==NULL)
-        {   vec[root->val]++;
+        {   
             int count=0;
-            for(int i=0;i<vec.size();i++)
+            for(int i=1;i<vec.size();i++)
             {
                 if(vec[i]%2)
                     count++;
             }
            if(count<=1)
-                 ans++;
-            return ;
+                 return 1;
+            return 0;
         }
-        vec[root->val]++;
-        dp(root->left,vec);
-        dp(root->right,vec);  
+        
+        return dp(root->left,vec)+dp(root->right,vec);
+          
     }
     int pseudoPalindromicPaths (TreeNode* root) {
         vector<int> vec(10,0);
-        dp(root,vec);
-        return ans;
+        return dp(root,vec);
     }
 };
