@@ -1,37 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    string smallestFromLeaf(TreeNode* root) {
-        string smallestString = "";
-        queue<pair<TreeNode*, string>> nodeQueue;
-
-        nodeQueue.push({root, string(1, root->val + 'a')});
-
-        while (!nodeQueue.empty()) {
-
-          
-            auto[node, currentString] = nodeQueue.front();
-            nodeQueue.pop();
-
-        
-            if (!node->left && !node->right) {
-
-                if (smallestString.empty()) {
-                    smallestString = currentString;
-                } else {
-                    smallestString = min(smallestString, currentString);
-                }
-            }
-
-          
-            if (node->left) {
-                nodeQueue.push({node->left, char(node->left->val + 'a') + currentString});
-            }
-
-            if (node->right) {
-                nodeQueue.push({node->right, char(node->right->val + 'a') + currentString});
-            }
+    string small;
+    void dp(TreeNode* root,string str)
+    {
+        if(root==NULL)
+            return ;
+        str=char(root->val+'a')+str;
+        if(root->left==NULL&&root->right==NULL)
+        {
+           if(small==""||small>str)
+               small=str;
         }
-
-        return smallestString;
+       dp(root->left,str),dp(root->right,str);
+       return ;
+    }
+    string smallestFromLeaf(TreeNode* root) {
+        dp(root,"");
+        return small;
     }
 };
