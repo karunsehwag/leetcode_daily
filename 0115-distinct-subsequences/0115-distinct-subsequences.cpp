@@ -1,21 +1,30 @@
 class Solution {
 public:
-    int rec(int i,int j,string& s, string& t,vector<vector<int>>& vec)
-    {   if(j==t.size())
-           return 1;
-        if(i>=s.size()||j>=t.size())
-            return 0;
-     if(vec[i][j]!=-1)
-         return vec[i][j];
-     int take=0;
-     if(s[i]==t[j])
-         take=rec(i+1,j+1,s,t,vec);
-     int notake=rec(i+1,j,s,t,vec);
-     return vec[i][j]=take+notake;
-        
-    }
+    int mod = 1e9+7;
     int numDistinct(string s, string t) {
-        vector<vector<int>> vec(s.size()+1,vector<int>(t.size()+1,-1));
-        return rec(0,0,s,t,vec);  
+        int n=s.size();
+        int m=t.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+        for(int j=0;j<=m;j++)
+            dp[0][j]=0;
+        for(int i=0;i<=n;i++)
+            dp[i][0]=1;
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                
+                if(s[i-1]==t[j-1])
+                {
+                    dp[i][j]=(dp[i-1][j-1]+dp[i-1][j])%mod;
+                }
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        }
+        
+        return dp[n][m];
+        
     }
 };
