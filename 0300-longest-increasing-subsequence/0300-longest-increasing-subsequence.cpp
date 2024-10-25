@@ -1,25 +1,22 @@
 class Solution {
 public:
-    int rec(int i,vector<int>& nums,int prev,vector<vector<int>>& vec )
-    {
-        if(i>=nums.size())
-            return 0;
-        if(vec[i][prev+1]!=-1)
-            return vec[i][prev+1];
-        int take=0;
-        if(prev==-1||nums[i]>nums[prev])
-        {  
-            take=1+rec(i+1,nums,i,vec);
-        }
-        int notake=rec(i+1,nums,prev,vec);
-        
-        return vec[i][prev+1]=max(take,notake);
-        
-            
-    }
     int lengthOfLIS(vector<int>& nums) {
-        vector<vector<int>> vec(nums.size()+1,vector<int>(nums.size()+1,-1));
-        return rec(0,nums,-1,vec);
-        
+        int n = nums.size();
+        vector<vector<int>> vec(n + 1, vector<int>(n + 1, 0));
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int prev_index = i - 1; prev_index >= -1; prev_index--) {
+                int notTake = vec[i + 1][prev_index + 1]; 
+                
+                int take = 0;
+                if (prev_index == -1 || nums[i] > nums[prev_index]) {
+                    take = 1 + vec[i + 1][i + 1]; 
+                }
+
+                vec[i][prev_index + 1] = max(notTake, take);
+            }
+        }
+
+        return vec[0][0];
     }
 };
