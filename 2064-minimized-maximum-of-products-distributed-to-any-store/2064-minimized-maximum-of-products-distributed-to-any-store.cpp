@@ -5,7 +5,7 @@ public:
         int count=0;
         for(int x:quantities)
         {
-            count+=ceil(double(x)/mid);
+            count+=(mid+x-1)/mid;
         }
         
         return count<=n;
